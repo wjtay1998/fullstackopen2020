@@ -5,6 +5,7 @@ import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
 import Notifcation from './components/Notification'
+import Error from './components/Error'
 
 const App = () => {
   const [ persons, setPersons ] = useState([]) 
@@ -12,6 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setSearch] = useState('')
   const [ notificationMsg, setNotificationMsg ] = useState('') 
+  const [ errorMsg, setErrorMsg ] = useState('') 
 
   useEffect(()=> {
     contactService.getAll()
@@ -29,7 +31,6 @@ const App = () => {
     const compare = persons.map(person => {return person.name === newName})
 
     if(compare.includes(true)){
-      // window.alert(`${newName} is already added to phonebook`)
       if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
         const original = persons.find(p => p.name === newName)
         newPerson.id = original.id
@@ -40,21 +41,23 @@ const App = () => {
             setNotificationMsg(`Updated ${original.name} in the phonebook`)
             setPersons(persons.map(person => person.id !== original.id ? person : newPerson))
           }).catch(error => {
-            alert(
-              `the person '${original.name}' was already deleted from server`
-            )
-            console.log('error', error)
-            setPersons(persons.filter(n => n.id !== original.id))
+            setErrorMsg(error.response.data.message)
           })
       }
     }else{
-      console.log('create')
+      console.log('create2')
       contactService
         .create(newPerson)
         .then(response => {
-        setNotificationMsg(`Added ${newName} to the phonebook`)
-        setPersons(persons.concat(response))
+          console.log('response2')
+          setNotificationMsg(`Added ${newName} to the phonebook`)
+          setPersons(persons.concat(response))
         })
+        .catch(error => {
+          console.log('catch2', error.response.data)
+          setErrorMsg(error.response.data.message)
+        })
+
     }
     setNewName('')
     setNewNumber('')
@@ -85,6 +88,9 @@ const App = () => {
         setNotificationMsg(`Deleted ${person.name} from the phonebook`)
         setPersons(persons.filter(p => p.id !== person.id))
       })
+      .catch(error => {
+        setErrorMsg(error.response.data.message)
+      })
     }
     
   }
@@ -93,6 +99,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Error errorMsg = {errorMsg} setErrorMsg = {setErrorMsg} />
       <Notifcation notificationMsg = {notificationMsg} setNotificationMsg = {setNotificationMsg} />
       <Filter newSearch = {newSearch} handleFilter = {handleFilter}/>
 
