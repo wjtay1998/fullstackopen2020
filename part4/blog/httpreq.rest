@@ -1,0 +1,27 @@
+GET http://localhost:3001/api/blogs
+Content-Type: 'application/json'
+
+###
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "test title 3",
+    "author": "test author",
+    "url": "testingurl.com",
+    "likes": 1234
+}
+
+###
+GET http://localhost:3001/api/blogs/5ec6a731752cea06f8c5fc67 HTTP/1.1
+
+###
+PUT http://localhost:3001/api/blogs/5ec6a731752cea06f8c5fc67 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "test title 4",
+    "author": "test author 2",
+    "url": "testingurl2.com",
+    "likes": 7890
+}
