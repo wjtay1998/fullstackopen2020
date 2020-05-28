@@ -11,7 +11,6 @@ const bcrypt = require('bcrypt')
 const User = require('../models/user')
 
 let token = ''
-let validId = null
 
 beforeEach(async () => {
   await User.deleteMany({})
@@ -33,7 +32,6 @@ beforeEach(async () => {
     })
 
   token = 'bearer ' + login.body.token
-  validId = await login.id
 })
 
 describe('addition of posts', () => {
