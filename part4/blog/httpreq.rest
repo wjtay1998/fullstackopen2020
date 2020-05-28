@@ -6,10 +6,11 @@ POST http://localhost:3001/api/blogs
 content-type: application/json
 
 {
-    "title": "test title 3",
+    "title": "test title 7",
     "author": "test author",
     "url": "testingurl.com",
-    "likes": 1234
+    "likes": 1234,
+    "userId": "5ecf8a9a3e453c2e0cac2248"
 }
 
 ###
@@ -25,3 +26,34 @@ content-type: application/json
     "url": "testingurl2.com",
     "likes": 7890
 }
+
+###
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "rootsecret"
+}
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVlY2ZiNTEzMmRmMmRiNDgzMDg1ZjNmNyIsImlhdCI6MTU5MDY3MjY1Nn0.QOb8lHxiKqhLT-1CbJdyuFvB4UNAjiQfc8iIX8DXtXA
+
+{
+    "title": "test title 22",
+    "author": "test author",
+    "url": "testingurl.com",
+    "likes": 1234,
+    "userId": "5ecfb5132df2db483085f3f7"
+}
+
+###
+DELETE http://localhost:3001/api/blogs/5ecfc2dd355d393430038752
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjVlY2ZjMmRkMzU1ZDM5MzQzMDAzODc1MCIsImlhdCI6MTU5MDY3NDQxMH0.9-A8dnW-flhPbebTJcYAx5cO-Wcz9Zxd4FfCScn2kS8
+
