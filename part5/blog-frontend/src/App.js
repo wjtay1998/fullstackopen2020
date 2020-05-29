@@ -3,9 +3,12 @@ import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
 import Error from './components/Error'
+import LoginForm from './components/LoginForm'
 
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
+import PostForm from './components/PostForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -16,16 +19,13 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [newPostAuthor, setNewPostAuthor] = useState('')
-  const [newPostTitle, setNewPostTitle] = useState('')
-  const [newPostUrl, setNewPostUrl] = useState('')
-  const [newPostLikes, setNewPostLikes] = useState('')
+  const noteFormRef = React.createRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
-  }, [])
+      setBlogs(blogs)
+    )
+  }, [notifcationMessage, user])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -72,61 +72,38 @@ const App = () => {
     setUser(null)
 
     setNotificationMessage('Successsful logout')
-      setTimeout(() => {
-        setNotificationMessage(null)
-      }, 5000)
+    setTimeout(() => {
+      setNotificationMessage(null)
+    }, 5000)
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
+  const loginForm = () => {
+    return (
       <div>
-        username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+        <LoginForm
+          username={username}
+          password={password}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          handleLogin={handleLogin}
         />
       </div>
-      <div>
-        password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  )
-  
-  const handleCreateNewPost = async (event) => {
-    event.preventDefault()
-    console.log('creating new post', newPostAuthor, newPostTitle, newPostUrl, newPostLikes)
+    )
+  }
 
-    const newPost = {
-      author: newPostAuthor,
-      title: newPostTitle,
-      url: newPostUrl,
-      likes: newPostLikes,
-    }
+  const handleCreateNewPost = async (newPost) => {
 
-    try{
+    try {
       const savedPost = await blogService.create(newPost)
+      noteFormRef.current.toggleVisibility()
       setBlogs(blogs.concat(savedPost))
-      
-      setNewPostAuthor('')
-      setNewPostTitle('')
-      setNewPostUrl('')
-      setNewPostLikes('')
 
       setNotificationMessage(`${user.username} successfully created a new blog ${savedPost.title}!`)
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
 
-    }catch (exception) {
+    } catch (exception) {
       setErrorMessage('Post creation failed')
       setTimeout(() => {
         setErrorMessage(null)
@@ -135,68 +112,67 @@ const App = () => {
 
   }
 
-  const postForm = () => (
-    <form onSubmit={handleCreateNewPost}>
-      <h2>create new</h2>
-      <div>
-        Author
-          <input
-          type="text"
-          value={newPostAuthor}
-          name="Author"
-          onChange={({ target }) => setNewPostAuthor(target.value)}
-        />
-      </div>
-      <div>
-        Title
-          <input
-          type="text"
-          value={newPostTitle}
-          name="Title"
-          onChange={({ target }) => setNewPostTitle(target.value)}
-        />
-      </div>
-      <div>
-        Url
-          <input
-          type="text"
-          value={newPostUrl}
-          name="Url"
-          onChange={({ target }) => setNewPostUrl(target.value)}
-        />
-      </div>
-      <div>
-        Likes
-          <input
-          type="number"
-          value={newPostLikes}
-          name="Likes"
-          onChange={({ target }) => setNewPostLikes(target.value)}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  )
+  const handleLike = async (post) => {
+    post.likes += 1
+    try {
+      await blogService.update(post)
+
+      setNotificationMessage(`${user.username} successfully liked a post ${post.title}!`)
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 5000)
+
+    } catch (exception) {
+      setErrorMessage('Like failed')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
+  const handleDelete = async (post) => {
+    if (window.confirm(`Remove ${post.title} by ${post.author}`)) {
+      try {
+        await blogService.remove(post)
+
+        setNotificationMessage(`${user.username} successfully deleted a post ${post.title}!`)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
+
+      } catch (exception) {
+        setErrorMessage('Deletion failed')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
+    }
+
+  }
 
   return (
     <div>
       <h1>Blogs</h1>
 
-      <Notification notificationMessage = {notifcationMessage} />
-      <Error errorMessage = {errorMessage} />
+      <Notification notificationMessage={notifcationMessage} />
+      <Error errorMessage={errorMessage} />
 
-      {user === null ? 
-        loginForm() :
+      {user === null ?
+        <Togglable buttonLabel='login'>
+          {loginForm()}
+        </Togglable>
+        :
         <div>
-          <p> {user.username} logged in <button onClick = {handleLogout}> logout </button></p>
-          {postForm()}
-
+          <p> {user.username} logged in <button onClick={handleLogout}> logout </button></p>
+          <Togglable buttonLabel='new post' ref={noteFormRef}>
+            <PostForm handleCreateNewPost={handleCreateNewPost} />
+          </Togglable>
           <br />
           <h2>Blog Posts</h2>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+          {blogs.sort((a, b) => (a.likes > b.likes) ? 1 : -1).map(blog =>
+            <Blog key={blog.id} blog={blog} handleLike={handleLike} handleDelete={handleDelete} />
           )}
-        
+
         </div>
       }
 

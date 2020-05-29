@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 const Error = ({ errorMessage }) => {
   const notifStyle = {
@@ -10,17 +10,17 @@ const Error = ({ errorMessage }) => {
     padding: 5,
     marginBottom: 10
   }
-  
-  if(errorMessage){
+
+  if (errorMessage) {
     return (
       <div style={notifStyle}>
         {errorMessage}
       </div>
-    );
+    )
   }
 
   return null
-  
-};
 
-export default Error;
+}
+
+export default Error
