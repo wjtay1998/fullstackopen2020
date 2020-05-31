@@ -53,12 +53,14 @@ const App = () => {
         'loggedBlogappUser', JSON.stringify(user)
       )
 
-      setNotificationMessage('Successsful login')
+      setNotificationMessage('Successful login')
       setTimeout(() => {
         setNotificationMessage(null)
       }, 5000)
 
     } catch (exception) {
+      setUsername('')
+      setPassword('')
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
         setErrorMessage(null)
@@ -71,7 +73,7 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
 
-    setNotificationMessage('Successsful logout')
+    setNotificationMessage('Successful logout')
     setTimeout(() => {
       setNotificationMessage(null)
     }, 5000)
@@ -163,7 +165,7 @@ const App = () => {
         </Togglable>
         :
         <div>
-          <p> {user.username} logged in <button onClick={handleLogout}> logout </button></p>
+          <p> {user.username} logged in <button id='logout-button' onClick={handleLogout}> logout </button></p>
           <Togglable buttonLabel='new post' ref={noteFormRef}>
             <PostForm handleCreateNewPost={handleCreateNewPost} />
           </Togglable>

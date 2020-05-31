@@ -21,13 +21,13 @@ const Blog = ({ blog, handleLike, handleDelete }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className='postHeader'>
       {blog.title} {blog.author}
       <Togglable buttonLabel='view'>
         <p>url: {blog.url}</p>
-        <p>likes: {blog.likes} <button onClick={processLike}>like</button> </p>
+        <p>likes: {blog.likes} <button id='like-button' onClick={processLike}>like</button> </p>
         <p>posted by: {blog.user.username}</p>
-        <button onClick={processDelete}>remove</button>
+        <button id ='delete-button' onClick={processDelete}>remove</button>
         <br />
       </Togglable>
     </div>
