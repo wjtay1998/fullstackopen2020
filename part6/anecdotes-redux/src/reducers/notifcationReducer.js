@@ -1,14 +1,27 @@
 const initialState = {message: null}
 export const clearNotifMsg = () => {
-  return {
-    type: 'CLEAR_MESSAGE',
+  return async dispatch => {
+    dispatch({
+      type: 'CLEAR_MESSAGE'
+    })
   }
 }
 
 export const setNotifMsg = (msg) => {
-  return {
-    type: 'SET_MESSAGE',
-    data: msg
+  return async dispatch => {
+    dispatch({
+      type: 'SET_MESSAGE',
+      data: msg
+    })
+  }
+}
+
+export const setNotification = (msg, time) => {
+  return async dispatch => {
+    setNotifMsg(msg)
+    setTimeout(() => {
+      clearNotifMsg()
+    }, time * 1000)
   }
 }
 
