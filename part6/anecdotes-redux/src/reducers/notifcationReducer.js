@@ -9,6 +9,7 @@ export const clearNotifMsg = () => {
 
 export const setNotifMsg = (msg) => {
   return async dispatch => {
+    console.log('settingnotif', msg)
     dispatch({
       type: 'SET_MESSAGE',
       data: msg
@@ -16,12 +17,21 @@ export const setNotifMsg = (msg) => {
   }
 }
 
+let timeoutId
 export const setNotification = (msg, time) => {
   return async dispatch => {
-    setNotifMsg(msg)
-    setTimeout(() => {
-      clearNotifMsg()
-    }, time * 1000)
+    console.log('notified', msg)
+    dispatch({
+      type: 'SET_MESSAGE',
+      data: msg
+    })
+    clearTimeout(timeoutId)
+    timeoutId = setTimeout(() => {
+      dispatch({
+        type: 'CLEAR_MESSAGE'
+      })
+    }, time*1000)
+    
   }
 }
 
