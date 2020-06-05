@@ -39,7 +39,7 @@ describe('Blog app', function () {
       cy.get('#login-button').click()
 
       cy.contains('Successful login')
-      .should('have.css','color', 'rgb(0, 128, 0)')
+        .should('have.css','color', 'rgb(0, 128, 0)')
         .and('have.css','border-style', 'solid')
     })
   })
@@ -51,8 +51,8 @@ describe('Blog app', function () {
 
     it('A blog post can be created and displayed correctly', function() {
       cy.createPost({
-        author: "cypress author",
-        title: "cypress title",
+        author: 'cypress author',
+        title: 'cypress title',
         url: 'http://cypressurl.com',
         likes: 10,
       })
@@ -69,8 +69,8 @@ describe('Blog app', function () {
 
     it('A post can be liked', function () {
       cy.createPost({
-        author: "cylike author",
-        title: "cylike title",
+        author: 'cylike author',
+        title: 'cylike title',
         url: 'http://cylikeurl.com',
         likes: 22,
       })
@@ -82,8 +82,8 @@ describe('Blog app', function () {
 
     it('A post can be deleted', function() {
       cy.createPost({
-        author: "cydelete author",
-        title: "cydelete title",
+        author: 'cydelete author',
+        title: 'cydelete title',
         url: 'http://cydeleteurl.com',
         likes: 33,
       })
@@ -96,8 +96,8 @@ describe('Blog app', function () {
 
     it('A post cannot be deleted by non-creator', function() {
       cy.createPost({
-        author: "cy1 author",
-        title: "cy1 title",
+        author: 'cy1 author',
+        title: 'cy1 title',
         url: 'http://cy1.com',
         likes: 44,
       })
@@ -110,7 +110,7 @@ describe('Blog app', function () {
         password: 'tester2secret'
       }
       cy.request('POST', 'http://localhost:3001/api/users/', user2)
-      cy.login({username: "tester2", password: "tester2secret"})
+      cy.login({username: 'tester2', password: 'tester2secret'})
 
       cy.contains('cy1 author').contains('view').click()
       cy.contains('cy1 author').get('#delete-button').click()
@@ -123,29 +123,29 @@ describe('Blog app', function () {
 
     it('blogs are ordered by number of likes', function() {
       cy.createPost({
-        author: "author1",
-        title: "title1",
+        author: 'author1',
+        title: 'title1',
         url: 'http://cy1.com',
         likes: 11,
       })
 
       cy.createPost({
-        author: "author2",
-        title: "title2",
+        author: 'author2',
+        title: 'title2',
         url: 'http://cy2.com',
         likes: 12,
       })
 
       cy.createPost({
-        author: "author3",
-        title: "title3",
+        author: 'author3',
+        title: 'title3',
         url: 'http://cy3.com',
         likes: 55,
       })
 
       cy.createPost({
-        author: "author4",
-        title: "title4",
+        author: 'author4',
+        title: 'title4',
         url: 'http://cy4.com',
         likes: 100,
       })

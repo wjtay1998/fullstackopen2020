@@ -1,46 +1,46 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "jest/globals": true 
+  'env': {
+    'commonjs': true,
+    'es6': true,
+    'node': true,
+    'jest/globals': true,
+    'cypress/globals': true
+  },
+  'extends': [
+    'eslint:recommended',
+    'plugin:react/recommended'
+  ],
+  'globals': {
+    'Atomics': 'readonly',
+    'SharedArrayBuffer': 'readonly'
+  },
+  'parserOptions': {
+    'ecmaFeatures': {
+      'jsx': true
     },
-    "extends": [ 
-        "eslint:recommended",
-        "plugin:react/recommended"
+    'ecmaVersion': 11,
+    'sourceType': 'module'
+  },
+  'plugins': [
+    'react', 'jest', 'cypress'
+  ],
+  'rules': {
+    'indent': [
+      'error',
+      2
     ],
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true,
-            "modules": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react", "jest"
+    'linebreak-style': [
+      'error',
+      'windows'
     ],
-    "rules": {
-        "indent": [
-            "error",
-            2  
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "never"
-        ],
-        "eqeqeq": "error",
-        "no-trailing-spaces": "error",
-        "object-curly-spacing": [
-            "error", "always"
-        ],
-        "arrow-spacing": [
-            "error", { "before": true, "after": true }
-        ],
-        "no-console": 0,
-        "react/prop-types": 0
-    }
+    'quotes': [
+      'error',
+      'single'
+    ],
+    'semi': [
+      'error',
+      'never'
+    ],
+    'react/prop-types': 0
   }
+}

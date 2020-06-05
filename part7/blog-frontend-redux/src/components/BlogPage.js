@@ -1,42 +1,56 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Togglable from './Togglable'
 import Blog from './Blog'
 import PostForm from './PostForm'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { ListGroup } from 'react-bootstrap'
 
-import { logoutUser } from '../reducers/loginReducer'
 import { genToggleId } from '../reducers/toggleReducer'
-import { initializeAllPosts } from '../reducers/blogReducer'
+import { Route, Link, Switch, useRouteMatch } from 'react-router-dom'
 
 const BlogPage = () => {
-  let id = 0
-  const dispatch = useDispatch()
   const blogs = useSelector(state => state.blog)
-  const user = useSelector(state => state.login)
-
-  useEffect(() => {
-    dispatch(initializeAllPosts())
-  }, [])
-
-  const handleLogout = (event) =>{
-    event.preventDefault()
-    dispatch(logoutUser())
-  }
+  const blogMatch = useRouteMatch('/blogs/:id')
+  const blog = blogMatch
+    ? blogs.find(u => u.id === blogMatch.params.id)
+    : null
 
   const byLikes = (b1, b2) => b2.likes - b1.likes
 
-  return(
+  const blogList = () => {
+    if (!blog) {
+      return (
+        <div>
+          <h2>Blog Posts</h2>
+          <ListGroup>
+            {blogs.sort(byLikes).map(blog =>
+              <ListGroup.Item key={blog.id}>
+                <Link to={`/blogs/${blog.id}`}>
+                  {blog.title}
+                </Link>
+              </ListGroup.Item>
+            )}
+          </ListGroup>
+        </div>
+      )
+    }
+    return null
+  }
+  return (
     <div>
-      <p> {user.username} logged in <button id='logout-button' onClick={handleLogout}> logout </button></p>
-      <Togglable id = {genToggleId()} buttonLabel='new post' >
-        <PostForm />
-      </Togglable>
-      <br />
-      <h2>Blog Posts</h2>
-      {blogs.sort(byLikes).map(blog =>
-        <Blog key = {blog.id} blog = {blog}/>
-      )}
+      <div>
+        <Togglable id={genToggleId()} buttonLabel='new post' >
+          <PostForm />
+        </Togglable>
+        <br />
+        {blogList()}
+      </div>
 
+      <Switch>
+        <Route path='/blogs/:id'>
+          <Blog blog={blog} />
+        </Route>
+      </Switch>
     </div>
   )
 

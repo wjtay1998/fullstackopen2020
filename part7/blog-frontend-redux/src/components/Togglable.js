@@ -1,5 +1,6 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { toggleVisibility } from '../reducers/toggleReducer'
 
 const Togglable = ({id, children, buttonLabel}) => {
@@ -19,15 +20,15 @@ const Togglable = ({id, children, buttonLabel}) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={handleToggle}>
+        <Button onClick={handleToggle}>
           {buttonLabel}
-        </button>
+        </Button>
       </div>
       <div style={showWhenVisible} className="togglableContent">
         {children}
-        <button onClick={handleToggle}
-          >cancel
-        </button>
+        <Button onClick={handleToggle}
+        >cancel
+        </Button>
       </div>
     </div>
   )

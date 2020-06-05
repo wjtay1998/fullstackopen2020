@@ -1,6 +1,7 @@
 import React from 'react'
 import { createPost } from '../reducers/blogReducer'
 import { useDispatch } from 'react-redux'
+import { Form, Button } from 'react-bootstrap'
 
 const PostForm = () => {
   const dispatch = useDispatch()
@@ -19,38 +20,38 @@ const PostForm = () => {
   }
 
   return (
-    <form onSubmit={handleNewPost}>
+    <Form onSubmit={handleNewPost}>
       <h2>create new</h2>
       <div>
-        Author
-        <input
+        <Form.Label>Author</Form.Label>
+        <Form.Control
           type="text"
           name="author"
         />
       </div>
       <div>
-        Title
-        <input
+        <Form.Label>Title</Form.Label>
+        <Form.Control
           type="text"
           name="title"
         />
       </div>
       <div>
-        Url
-        <input
+        <Form.Label>Url</Form.Label>
+        <Form.Control
           type="text"
           name="url"
         />
       </div>
       <div>
-        Likes
-        <input
+        <Form.Label>Likes</Form.Label>
+        <Form.Control
           type="number"
           name="likes"
         />
       </div>
-      <button type="submit">create</button>
-    </form>
+      <Button type="submit">create</Button>
+    </Form>
   )
 }
 

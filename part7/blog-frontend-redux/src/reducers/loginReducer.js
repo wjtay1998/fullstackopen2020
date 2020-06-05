@@ -4,14 +4,14 @@ import { setNotif, setError } from './notificationReducer'
 
 const loginReducer = (state = null, action) => {
   switch (action.type) {
-    case 'INIT':
-      return action.data
-    case 'LOGIN':
-      return action.data
-    case 'LOGOUT':
-      return null
-    default:
-      return state
+  case 'INIT':
+    return action.data
+  case 'LOGIN':
+    return action.data
+  case 'LOGOUT':
+    return null
+  default:
+    return state
   }
 }
 
@@ -29,7 +29,7 @@ export const loginUser = (credentials) => {
       )
       dispatch(setNotif(`${data.username} successfully logged in`))
     } catch (exception) {
-      dispatch(setError(`Failed to log in`))
+      dispatch(setError('Failed to log in'))
     }
   }
 }
@@ -42,9 +42,9 @@ export const logoutUser = () => {
       dispatch({
         type: 'LOGOUT'
       })
-      dispatch(setNotif(`Successfully logged out`))
+      dispatch(setNotif('Successfully logged out'))
     } catch (exception){
-      dispatch(setError(`Failed to log out`))
+      dispatch(setError('Failed to log out'))
     }
     
   }

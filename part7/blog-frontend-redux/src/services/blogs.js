@@ -16,7 +16,7 @@ const create = async newObject => {
   return response.data
 }
 
-const getAll = async () => {
+const getAllPosts = async () => {
   const response = await axios.get(baseUrl)
   return response.data
 }
@@ -39,4 +39,4 @@ const remove = async (delObject) => {
   return response.data
 }
 
-export default { getAll, create, setToken, update, remove }
+export default { getAllPosts, create, setToken, update, remove }

@@ -11,15 +11,15 @@ describe('<Blog />', () => {
   beforeEach(() => {
     const blog = {
       likes: 10,
-      title: "testing title 10",
-      author: "test author 10",
-      url: "test10.com",
-      date: "2020-05-29T14:27:19.152Z",
+      title: 'testing title 10',
+      author: 'test author 10',
+      url: 'test10.com',
+      date: '2020-05-29T14:27:19.152Z',
       user: {
-        username: "root",
-        id: "5ecfc77227b3ff1f48bd1a3c"
+        username: 'root',
+        id: '5ecfc77227b3ff1f48bd1a3c'
       },
-      id: "5ed11bc735644d3b70e5be2a"
+      id: '5ed11bc735644d3b70e5be2a'
     }
 
     mockHandler = jest.fn()

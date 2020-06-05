@@ -35,7 +35,8 @@ PostsRouter.post('/', async (request, response) => {
     url: body.url,
     likes: body.likes,
     date: new Date(),
-    user: user.id
+    user: user.id,
+    comment: []
   })
 
   const savedPost = await post.save()
@@ -73,6 +74,7 @@ PostsRouter.put('/:id', async (request, response) => {
     url: body.url,
     likes: body.likes,
     date: new Date(),
+    comment: body.comment,
   }
 
   Post.findByIdAndUpdate(request.params.id, post, { new: true })

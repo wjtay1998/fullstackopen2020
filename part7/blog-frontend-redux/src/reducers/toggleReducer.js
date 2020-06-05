@@ -6,15 +6,15 @@ export const genToggleId = () => {
 
 const toggleReducer = (state = [], action) => {
   switch (action.type) {
-    case 'TOGGLE_VISIBILITY':
-      if(state.find(s => s === action.id)){
-        const clean = state.filter(s => !(s === action.id))
-        return clean
-      }else{
-        return [...state, action.id]
-      }
-    default: 
-      return state
+  case 'TOGGLE_VISIBILITY':
+    if(state.find(s => s === action.id)){
+      const clean = state.filter(s => !(s === action.id))
+      return clean
+    }else{
+      return [...state, action.id]
+    }
+  default: 
+    return state
   }
 }
 
